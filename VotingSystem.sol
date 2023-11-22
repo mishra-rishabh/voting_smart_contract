@@ -14,6 +14,8 @@ contract VotingSystem {
     address owner;
 
     mapping(address => bool) public voters;
+    
+    event VoteCast(address indexed voter, uint indexed candidateIndex);
 
     constructor(string[] memory _candidateNames, uint _durationInMinutes) {
         for(uint16 i = 0; i < _candidateNames.length; i++) {
@@ -52,6 +54,7 @@ contract VotingSystem {
         candidates[_candidateIndex].voteCount++;
         voters[msg.sender] = true;
 
+        emit VoteCast(msg.sender, _candidateIndex);
     }
 
     function getAllCandidatesVotes() public view returns (Candidate[] memory) {
